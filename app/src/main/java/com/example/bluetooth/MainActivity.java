@@ -37,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
-    TextView textStatus;
-    Button btnParied, btnSearch, btnlive, btnplay, btnSend;
+    TextView textStatus, codetextview;
+    Button btnParied, btnSearch, btnlive, btnplay, btnSend, btnPlayDel;
     Button btnCodeC, btnCodeD,btnCodeE,btnCodeF,btnCodeG,btnCodeH,btnCodeI,btnCodeJ,btnCodeL,btnCodeM,btnCodeN,btnCodeO;
     ListView listView;
+    String playStr = "";
 
 
     LinearLayout contentMain;
@@ -84,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
         btnParied = (Button) findViewById(R.id.btn_paired);
         btnSearch = (Button) findViewById(R.id.btn_search);
 
-        btnlive = (Button) findViewById(R.id.btn_live);
-        btnplay = (Button) findViewById(R.id.btn_play);
         listView = (ListView) findViewById(R.id.listview);
 
         //layout
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
         //음 버튼
         this.initializeView();
-
 
         // Show paired devices
         btArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         contentMain.addView(listView);
         listView.setVisibility(View.VISIBLE);
 
-
+        //블루투스
         btArrayAdapter.clear();
         if(deviceAddressArray!=null && !deviceAddressArray.isEmpty()){ deviceAddressArray.clear(); }
         pairedDevices = btAdapter.getBondedDevices();
@@ -135,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setVisibility(View.VISIBLE);
 
         // Check if the device is already discovering
+        //TODO 확인필요 비정상 종료 발생!
         if(btAdapter.isDiscovering()){
             btAdapter.cancelDiscovery();
         } else {
@@ -223,8 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
     //모드별 활성화
     public void onClickButtonMode(View view){
-        //블루투스 리스트, 연주모드, 악보모드 3가지중 하나 레이아웃만 출력!
-        //TODO 블루투스 버튼 2개 눌럿을때 다른레이아웃 비활성화 확인!!
+        //TODO 블루투스 버튼 2개(기기,검색) 눌럿을때 다른레이아웃 비활성화 확인!!
         if (view.getId() == R.id.btn_live){
             //연주모드
             listView.setVisibility(View.INVISIBLE);
@@ -238,62 +236,110 @@ public class MainActivity extends AppCompatActivity {
             inflater.inflate(R.layout.code_layout,contentMain,true); //자식레이아웃 삽입
             inflater.inflate(R.layout.play_layout,contentMain,true);//악보용 레이아웃 추가
             setCodeListener(); //자식레이아웃 추가후 그 레아아웃에 있는 버튼의 클릭리스너 메소드 불러오기
+            onPlayBtnListener(); //악보 모드용 버튼 이벤트            
         } else if (view.getId() == R.id.loadbtn){
-            //연주모드 안에 로딩레이아웃 활성화
+            //TODO 팝업으로 저장된 곡 리스트 출력하기
             listView.setVisibility(View.INVISIBLE);
-            //일시적으로만 song레이아웃을 출력후 거기에 버튼 클릭시 빠저나오기 즉 팝업 레이아웃
+            //일시적으로만 song레이아웃을 팝업 레이아웃으로 출력
         }
     }
 
-    //악보모드에서 저장된 노래 레스트 팝업 및 버튼들 값(노래코드) 출력해주기
+    //저장곡 불러오기
     public void onClickSong(){
+        //팝업에 뜨는 거 관련 처리 부분
 
+    }
+
+    //악보모드
+    public void onPlayBtnListener() {
+        //악보모드 제어 위젯 변수 초기화
+        btnSend = (Button)  contentMain.findViewById (R.id.btn_playsend);
+        btnPlayDel = (Button) contentMain.findViewById (R.id.btn_playDelet);
+        codetextview = (TextView)  contentMain.findViewById (R.id.code_textview);
+        //버튼 이벤트
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playStr != null){
+                    connectedThread.write(playStr); //playStr에 들어있는 문자열을 전송!
+                    Toast.makeText(getApplicationContext(), "음계 전송!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "입력된 음계가 없습니다!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btnPlayDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //playstr에 값을 하나씩 지우고 textview에 값 변경
+                if (playStr != null) {
+                    playStr = playStr.substring(0, playStr.length()-1);
+                } else {
+                    Toast.makeText(getApplicationContext(), "계이름을 클릭하세요!", Toast.LENGTH_SHORT).show();
+                }
+                codetextview.setText(playStr);
+            }
+        });
     }
 
     public void initializeView()
     {
+        //음계 버튼
         btnCodeC = (Button) contentMain.findViewById (R.id.btn_code_c);
         btnCodeD = (Button) contentMain.findViewById (R.id.btn_code_d);
         btnCodeE = (Button) contentMain.findViewById (R.id.btn_code_e);
+        //TODO 버튼 추가(테스트후)
         
     }
 
+    
+    //코드 버튼 처리
     public void setCodeListener() {
-
-        /* 각버튼별로 오버라이딩 하는 방법
-        //변수초기화
-        initializeView();
-
-        btnCodeC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "도", Toast.LENGTH_SHORT).show();
-                //connectedThread.write("c");
-            }
-        });
-        */
-
         //변수 초기화
         initializeView();
-
+        
+        //TODO 뷰에 play레이아웃도 추가되어 있을경우 (코드만 있는것이아닌) if문으로 즉시 전송과 텍스트로 모으는거 구별하기
         View.OnClickListener Listner = new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                switch (view.getId()) {
-                    case R.id.btn_code_c:
-                        //connectedThread.write("c");
-                        Toast.makeText(getApplicationContext(), "도", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.btn_code_d:
-                        //connectedThread.write("d");
-                        Toast.makeText(getApplicationContext(), "레", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.btn_code_e:
-                        connectedThread.write("e");
-                        Toast.makeText(getApplicationContext(), "미", Toast.LENGTH_SHORT).show();
-                        break;
+                if ( contentMain.getChildCount() > 1 ){ //contentMain에 추가되는 자식 카운트(연주모드에선 2개 들어감)
+                    //악보모드 playstr저장
+                    switch (view.getId()) {
+                        case R.id.btn_code_c:
+                            Toast.makeText(getApplicationContext(), "도인데 악보", Toast.LENGTH_SHORT).show();
+                            playStr = playStr + "c";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_d:
+                            Toast.makeText(getApplicationContext(), "레-ㅇ", Toast.LENGTH_SHORT).show();
+                            playStr = playStr + "d";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_e:
+                            Toast.makeText(getApplicationContext(), "미-", Toast.LENGTH_SHORT).show();
+                            playStr = playStr + "e";
+                            codetextview.setText(playStr);
+                            break;
+
+                    }
+                } else {
+                    //일반적 출력
+                    switch (view.getId()) {
+                        case R.id.btn_code_c:
+                            //connectedThread.write("c");
+                            Toast.makeText(getApplicationContext(), "도", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_d:
+                            //connectedThread.write("d");
+                            Toast.makeText(getApplicationContext(), "레", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_e:
+                            connectedThread.write("e");
+                            Toast.makeText(getApplicationContext(), "미", Toast.LENGTH_SHORT).show();
+                            break;
                         //TODO 버튼별로 모두 추가하기(연결 테스트후)
 
+                    }
                 }
             }
         };
