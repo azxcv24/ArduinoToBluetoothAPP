@@ -1,5 +1,6 @@
 package com.example.bluetooth;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -9,6 +10,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -38,16 +40,15 @@ public class MainActivity extends AppCompatActivity {
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
     TextView textStatus, codetextview;
-    Button btnParied, btnSearch, btnlive, btnplay, btnSend, btnPlayDel;
+    Button btnParied, btnSearch, btnSend, btnPlayDel,btnSongLoad;
     Button btnCodeC, btnCodeD,btnCodeE,btnCodeF,btnCodeG,btnCodeH,btnCodeI,btnCodeJ,btnCodeL,btnCodeM,btnCodeN,btnCodeO;
+    Button btnSong1, btnSong2,btnSong3;
     ListView listView;
     String playStr = "";
 
-
     LinearLayout contentMain;
     LayoutInflater inflater;
-
-
+    View dlgsongView;
 
     BluetoothAdapter btAdapter;
     Set<BluetoothDevice> pairedDevices;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.BLUETOOTH_CONNECT
-
         };
         ActivityCompat.requestPermissions(MainActivity.this, permission_list, 1);
 
@@ -84,14 +84,13 @@ public class MainActivity extends AppCompatActivity {
         textStatus = (TextView) findViewById(R.id.text_status);
         btnParied = (Button) findViewById(R.id.btn_paired);
         btnSearch = (Button) findViewById(R.id.btn_search);
-
         listView = (ListView) findViewById(R.id.listview);
 
         //layout
         contentMain = findViewById(R.id.content_main);
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        //음 버튼
+        //음계 버튼
         this.initializeView();
 
         // Show paired devices
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     //블투투스 기기리스트 버튼 이벤트
     public void onClickButtonPaired(View view){
-        //레이아웃 보여주기
+        //레이아웃 처리
         contentMain.removeAllViews();
         contentMain.addView(listView);
         listView.setVisibility(View.VISIBLE);
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     //블루투스 검색버튼이벤트
     public void onClickButtonSearch(View view){
-        //레이아웃 변경
+        //레이아웃 처리
         contentMain.removeAllViews();
         contentMain.addView(listView);
         listView.setVisibility(View.VISIBLE);
@@ -171,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         // Don't forget to unregister the ACTION_FOUND receiver.
         unregisterReceiver(receiver);
     }
@@ -236,17 +234,69 @@ public class MainActivity extends AppCompatActivity {
             inflater.inflate(R.layout.code_layout,contentMain,true); //자식레이아웃 삽입
             inflater.inflate(R.layout.play_layout,contentMain,true);//악보용 레이아웃 추가
             setCodeListener(); //자식레이아웃 추가후 그 레아아웃에 있는 버튼의 클릭리스너 메소드 불러오기
-            onPlayBtnListener(); //악보 모드용 버튼 이벤트            
-        } else if (view.getId() == R.id.loadbtn){
-            //TODO 팝업으로 저장된 곡 리스트 출력하기
-            listView.setVisibility(View.INVISIBLE);
-            //일시적으로만 song레이아웃을 팝업 레이아웃으로 출력
+            onPlayBtnListener(); //악보 모드용 버튼 이벤트
+            onClickSongLoad(); //노래 리스트 버튼 이벤트
         }
     }
 
+    public void onClickSongLoad(){
+        //변수처리
+        btnSongLoad = (Button) findViewById(R.id.loadbtn);
+        //팝업 다이얼로그
+        btnSongLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dlgsongView = (View) View.inflate(MainActivity.this, R.layout.song_layout,null);
+
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("노래 선택");
+                dlg.setView(dlgsongView);
+                onClickSong(); //노래 이벤트호출
+
+                //버튼 클릭시 동작
+                dlg.setPositiveButton("확인",null);
+                dlg.setNegativeButton("취소",null);
+                dlg.show();
+            }
+        });
+    }
+
+
     //저장곡 불러오기
     public void onClickSong(){
-        //팝업에 뜨는 거 관련 처리 부분
+        //변수처리
+        btnSong1 = (Button) dlgsongView.findViewById(R.id.song1btn);
+        btnSong2 = (Button) dlgsongView.findViewById(R.id.song2btn);
+        btnSong3 = (Button) dlgsongView.findViewById(R.id.song3btn);
+
+        //팝업에서 노래 클릭했을떄 처리
+        View.OnClickListener SongListner = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    //TODO 노래 넣기(음계)
+                    case R.id.song1btn:
+                        playStr = "abcdddcddcdcdd";
+                        codetextview.setText(playStr);
+
+                        Toast.makeText(getApplicationContext(), "불러오기 완료!(확인 버튼 후 재생버튼 을 눌러주세요)", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.song2btn:
+                        playStr = "bbbeefd";
+                        codetextview.setText(playStr);
+                        Toast.makeText(getApplicationContext(), "불러오기 완료!(확인 버튼 후 재생버튼 을 눌러주세요)", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.song3btn:
+                        playStr = "adfadfwdv";
+                        codetextview.setText(playStr);
+                        Toast.makeText(getApplicationContext(), "불러오기 완료!(확인 버튼 후 재생버튼 을 눌러주세요)", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+        btnSong1.setOnClickListener(SongListner);
+        btnSong2.setOnClickListener(SongListner);
+        btnSong3.setOnClickListener(SongListner);
 
     }
 
@@ -298,8 +348,8 @@ public class MainActivity extends AppCompatActivity {
         //변수 초기화
         initializeView();
         
-        //TODO 뷰에 play레이아웃도 추가되어 있을경우 (코드만 있는것이아닌) if문으로 즉시 전송과 텍스트로 모으는거 구별하기
-        View.OnClickListener Listner = new View.OnClickListener(){
+        //버튼 이벤트
+        View.OnClickListener codeListner = new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 if ( contentMain.getChildCount() > 1 ){ //contentMain에 추가되는 자식 카운트(연주모드에선 2개 들어감)
@@ -337,16 +387,18 @@ public class MainActivity extends AppCompatActivity {
                             connectedThread.write("e");
                             Toast.makeText(getApplicationContext(), "미", Toast.LENGTH_SHORT).show();
                             break;
-                        //TODO 버튼별로 모두 추가하기(연결 테스트후)
+                        //TODO 버튼별로 모두 추가하기(연결 테스트후) 토스트시간 0.5로 변경
+                        //TODO 전송전 클릭시 미연결이라면 오류 출력
 
                     }
                 }
             }
         };
 
-        btnCodeC.setOnClickListener(Listner);
-        btnCodeD.setOnClickListener(Listner);
-        btnCodeE.setOnClickListener(Listner);
+        //버튼 이벤트 연결
+        btnCodeC.setOnClickListener(codeListner);
+        btnCodeD.setOnClickListener(codeListner);
+        btnCodeE.setOnClickListener(codeListner);
 
     }
 }

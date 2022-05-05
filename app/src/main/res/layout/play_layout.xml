@@ -47,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:onClick="onClickButtonMode"
         android:text="노래모음 불러오기" />
 
 </LinearLayout>

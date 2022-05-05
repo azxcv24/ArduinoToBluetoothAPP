@@ -13,18 +13,21 @@
             android:id="@+id/song1btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:text="학교종이 떙떙떙" />
 
         <Button
             android:id="@+id/song2btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:text="학교종이 떙떙떙2" />
 
         <Button
             android:id="@+id/song3btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:text="학교종이 떙떙떙3" />
 
     </LinearLayout>
