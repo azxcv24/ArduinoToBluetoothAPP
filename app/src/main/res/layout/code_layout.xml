@@ -63,7 +63,7 @@
                 android:text="솔" />
 
             <Button
-                android:id="@+id/btn_code_a"
+                android:id="@+id/btn_code_h"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -71,7 +71,7 @@
                 android:text="라" />
 
             <Button
-                android:id="@+id/btn_code_b"
+                android:id="@+id/btn_code_i"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -92,7 +92,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_code_h"
+                android:id="@+id/btn_code_j"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -100,7 +100,7 @@
                 android:text="높은 도" />
 
             <Button
-                android:id="@+id/btn_code_l"
+                android:id="@+id/btn_code_k"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -108,7 +108,7 @@
                 android:text="높은 레" />
 
             <Button
-                android:id="@+id/btn_code_m"
+                android:id="@+id/btn_code_l"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -122,7 +122,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_code_n"
+                android:id="@+id/btn_code_m"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -130,7 +130,7 @@
                 android:text="높은 파" />
 
             <Button
-                android:id="@+id/btn_code_o"
+                android:id="@+id/btn_code_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -138,7 +138,7 @@
                 android:text="높은 솔" />
 
             <Button
-                android:id="@+id/btn_code_p"
+                android:id="@+id/btn_code_o"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -146,7 +146,7 @@
                 android:text="높은 라" />
 
             <Button
-                android:id="@+id/btn_code_q"
+                android:id="@+id/btn_code_p"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"

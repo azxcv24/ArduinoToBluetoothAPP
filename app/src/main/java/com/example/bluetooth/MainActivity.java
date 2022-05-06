@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
     TextView textStatus, codetextview;
-    Button btnParied, btnSearch, btnSend, btnPlayDel,btnSongLoad;
-    Button btnCodeC, btnCodeD,btnCodeE,btnCodeF,btnCodeG,btnCodeH,btnCodeI,btnCodeJ,btnCodeL,btnCodeM,btnCodeN,btnCodeO;
-    Button btnSong1, btnSong2,btnSong3;
+    Button btnParied, btnSearch, btnSend, btnPlayDel, btnSongLoad;
+    Button btnCodeC, btnCodeD, btnCodeE, btnCodeF, btnCodeG, btnCodeH, btnCodeI, btnCodeJ, btnCodeK, btnCodeL, btnCodeM, btnCodeN, btnCodeO, btnCodeP, btnCodeNull;
+    Button btnSong1, btnSong2, btnSong3;
     ListView listView;
     String playStr = "";
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //블투투스 기기리스트 버튼 이벤트
-    public void onClickButtonPaired(View view){
+    public void onClickButtonPaired(View view) {
         //레이아웃 처리
         contentMain.removeAllViews();
         contentMain.addView(listView);
@@ -111,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
         //블루투스
         btArrayAdapter.clear();
-        if(deviceAddressArray!=null && !deviceAddressArray.isEmpty()){ deviceAddressArray.clear(); }
+        if (deviceAddressArray != null && !deviceAddressArray.isEmpty()) {
+            deviceAddressArray.clear();
+        }
         pairedDevices = btAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //블루투스 검색버튼이벤트
-    public void onClickButtonSearch(View view){
+    public void onClickButtonSearch(View view) {
         //레이아웃 처리
         contentMain.removeAllViews();
         contentMain.addView(listView);
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if the device is already discovering
         //TODO 확인필요 비정상 종료 발생!
-        if(btAdapter.isDiscovering()){
+        if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
         } else {
             if (btAdapter.isEnabled()) {
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getApplicationContext(), btArrayAdapter.getItem(position) + "에 연결시도" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), btArrayAdapter.getItem(position) + "에 연결시도", Toast.LENGTH_SHORT).show();
 
             textStatus.setText("try...");
 
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // start bluetooth communication
-            if(flag){
+            if (flag) {
                 textStatus.setText(name + " 에 연결");
                 connectedThread = new ConnectedThread(btSocket);
                 connectedThread.start();
@@ -213,40 +215,40 @@ public class MainActivity extends AppCompatActivity {
             final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
             return (BluetoothSocket) m.invoke(device, BT_MODULE_UUID);
         } catch (Exception e) {
-            Log.e(TAG, "Could not create Insecure RFComm Connection",e);
+            Log.e(TAG, "Could not create Insecure RFComm Connection", e);
         }
-        return  device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
+        return device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
     }
 
     //모드별 활성화
-    public void onClickButtonMode(View view){
+    public void onClickButtonMode(View view) {
         //TODO 블루투스 버튼 2개(기기,검색) 눌럿을때 다른레이아웃 비활성화 확인!!
-        if (view.getId() == R.id.btn_live){
+        if (view.getId() == R.id.btn_live) {
             //연주모드
             listView.setVisibility(View.INVISIBLE);
             contentMain.removeAllViews();
-            inflater.inflate(R.layout.code_layout,contentMain,true); //자식레이아웃 삽입
+            inflater.inflate(R.layout.code_layout, contentMain, true); //자식레이아웃 삽입
             setCodeListener(); //자식레이아웃 추가후 그 레아아웃에 있는 버튼의 클릭리스너 메소드 불러오기
-        } else if (view.getId() == R.id.btn_play){
+        } else if (view.getId() == R.id.btn_play) {
             //악보모드
             listView.setVisibility(View.INVISIBLE);
             contentMain.removeAllViews();
-            inflater.inflate(R.layout.code_layout,contentMain,true); //자식레이아웃 삽입
-            inflater.inflate(R.layout.play_layout,contentMain,true);//악보용 레이아웃 추가
+            inflater.inflate(R.layout.code_layout, contentMain, true); //자식레이아웃 삽입
+            inflater.inflate(R.layout.play_layout, contentMain, true);//악보용 레이아웃 추가
             setCodeListener(); //자식레이아웃 추가후 그 레아아웃에 있는 버튼의 클릭리스너 메소드 불러오기
             onPlayBtnListener(); //악보 모드용 버튼 이벤트
             onClickSongLoad(); //노래 리스트 버튼 이벤트
         }
     }
 
-    public void onClickSongLoad(){
+    public void onClickSongLoad() {
         //변수처리
         btnSongLoad = (Button) findViewById(R.id.loadbtn);
         //팝업 다이얼로그
         btnSongLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dlgsongView = (View) View.inflate(MainActivity.this, R.layout.song_layout,null);
+                dlgsongView = (View) View.inflate(MainActivity.this, R.layout.song_layout, null);
 
                 AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
                 dlg.setTitle("노래 선택");
@@ -254,8 +256,8 @@ public class MainActivity extends AppCompatActivity {
                 onClickSong(); //노래 이벤트호출
 
                 //버튼 클릭시 동작
-                dlg.setPositiveButton("확인",null);
-                dlg.setNegativeButton("취소",null);
+                dlg.setPositiveButton("확인", null);
+                dlg.setNegativeButton("취소", null);
                 dlg.show();
             }
         });
@@ -263,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //저장곡 불러오기
-    public void onClickSong(){
+    public void onClickSong() {
         //변수처리
         btnSong1 = (Button) dlgsongView.findViewById(R.id.song1btn);
         btnSong2 = (Button) dlgsongView.findViewById(R.id.song2btn);
@@ -303,14 +305,23 @@ public class MainActivity extends AppCompatActivity {
     //악보모드
     public void onPlayBtnListener() {
         //악보모드 제어 위젯 변수 초기화
-        btnSend = (Button)  contentMain.findViewById (R.id.btn_playsend);
-        btnPlayDel = (Button) contentMain.findViewById (R.id.btn_playDelet);
-        codetextview = (TextView)  contentMain.findViewById (R.id.code_textview);
+        btnCodeNull = (Button) contentMain.findViewById(R.id.btn_code_null);
+        btnSend = (Button) contentMain.findViewById(R.id.btn_playsend);
+        btnPlayDel = (Button) contentMain.findViewById(R.id.btn_playDelet);
+        codetextview = (TextView) contentMain.findViewById(R.id.code_textview);
+
         //버튼 이벤트
+        btnCodeNull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playStr = playStr + " ";
+                codetextview.setText(playStr);
+            }
+        });
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (playStr != null){
+                if (playStr != null) {
                     connectedThread.write(playStr); //playStr에 들어있는 문자열을 전송!
                     Toast.makeText(getApplicationContext(), "음계 전송!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -323,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //playstr에 값을 하나씩 지우고 textview에 값 변경
                 if (playStr != null) {
-                    playStr = playStr.substring(0, playStr.length()-1);
+                    playStr = playStr.substring(0, playStr.length() - 1);
                 } else {
                     Toast.makeText(getApplicationContext(), "계이름을 클릭하세요!", Toast.LENGTH_SHORT).show();
                 }
@@ -332,60 +343,154 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void initializeView()
-    {
+    public void initializeView() {
         //음계 버튼
-        btnCodeC = (Button) contentMain.findViewById (R.id.btn_code_c);
-        btnCodeD = (Button) contentMain.findViewById (R.id.btn_code_d);
-        btnCodeE = (Button) contentMain.findViewById (R.id.btn_code_e);
+        btnCodeC = (Button) contentMain.findViewById(R.id.btn_code_c);
+        btnCodeD = (Button) contentMain.findViewById(R.id.btn_code_d);
+        btnCodeE = (Button) contentMain.findViewById(R.id.btn_code_e);
+        btnCodeF = (Button) contentMain.findViewById(R.id.btn_code_f);
+        btnCodeG = (Button) contentMain.findViewById(R.id.btn_code_g);
+        btnCodeH = (Button) contentMain.findViewById(R.id.btn_code_h);
+        btnCodeI = (Button) contentMain.findViewById(R.id.btn_code_i);
+        btnCodeJ = (Button) contentMain.findViewById(R.id.btn_code_j);
+        btnCodeK = (Button) contentMain.findViewById(R.id.btn_code_k);
+        btnCodeL = (Button) contentMain.findViewById(R.id.btn_code_l);
+        btnCodeM = (Button) contentMain.findViewById(R.id.btn_code_m);
+        btnCodeN = (Button) contentMain.findViewById(R.id.btn_code_n);
+        btnCodeO = (Button) contentMain.findViewById(R.id.btn_code_o);
+        btnCodeP = (Button) contentMain.findViewById(R.id.btn_code_p);
         //TODO 버튼 추가(테스트후)
-        
+
     }
 
-    
+
     //코드 버튼 처리
     public void setCodeListener() {
         //변수 초기화
         initializeView();
-        
+
         //버튼 이벤트
-        View.OnClickListener codeListner = new View.OnClickListener(){
+        View.OnClickListener codeListner = new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                if ( contentMain.getChildCount() > 1 ){ //contentMain에 추가되는 자식 카운트(연주모드에선 2개 들어감)
+            public void onClick(View view) {
+                if (contentMain.getChildCount() > 1) { //contentMain에 추가되는 자식 카운트(연주모드에선 2개 들어감)
                     //악보모드 playstr저장
                     switch (view.getId()) {
                         case R.id.btn_code_c:
-                            Toast.makeText(getApplicationContext(), "도인데 악보", Toast.LENGTH_SHORT).show();
                             playStr = playStr + "c";
                             codetextview.setText(playStr);
                             break;
                         case R.id.btn_code_d:
-                            Toast.makeText(getApplicationContext(), "레-ㅇ", Toast.LENGTH_SHORT).show();
                             playStr = playStr + "d";
                             codetextview.setText(playStr);
                             break;
                         case R.id.btn_code_e:
-                            Toast.makeText(getApplicationContext(), "미-", Toast.LENGTH_SHORT).show();
                             playStr = playStr + "e";
                             codetextview.setText(playStr);
                             break;
-
+                        case R.id.btn_code_f:
+                            playStr = playStr + "f";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_g:
+                            playStr = playStr + "g";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_h:
+                            playStr = playStr + "h";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_i:
+                            playStr = playStr + "i";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_j:
+                            playStr = playStr + "j";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_k:
+                            playStr = playStr + "k";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_l:
+                            playStr = playStr + "l";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_m:
+                            playStr = playStr + "m";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_n:
+                            playStr = playStr + "n";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_o:
+                            playStr = playStr + "o";
+                            codetextview.setText(playStr);
+                            break;
+                        case R.id.btn_code_p:
+                            playStr = playStr + "p";
+                            codetextview.setText(playStr);
+                            break;
                     }
                 } else {
                     //일반적 출력
                     switch (view.getId()) {
                         case R.id.btn_code_c:
-                            //connectedThread.write("c");
+                            connectedThread.write("c");
                             Toast.makeText(getApplicationContext(), "도", Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.btn_code_d:
-                            //connectedThread.write("d");
+                            connectedThread.write("d");
                             Toast.makeText(getApplicationContext(), "레", Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.btn_code_e:
                             connectedThread.write("e");
                             Toast.makeText(getApplicationContext(), "미", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_f:
+                            connectedThread.write("f");
+                            Toast.makeText(getApplicationContext(), "파", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_g:
+                            connectedThread.write("g");
+                            Toast.makeText(getApplicationContext(), "솔", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_h:
+                            connectedThread.write("h");
+                            Toast.makeText(getApplicationContext(), "라", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_i:
+                            connectedThread.write("i");
+                            Toast.makeText(getApplicationContext(), "시", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_j:
+                            connectedThread.write("j");
+                            Toast.makeText(getApplicationContext(), "높은 도", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_k:
+                            connectedThread.write("k");
+                            Toast.makeText(getApplicationContext(), "높은 레", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_l:
+                            connectedThread.write("l");
+                            Toast.makeText(getApplicationContext(), "높은 미", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_m:
+                            connectedThread.write("m");
+                            Toast.makeText(getApplicationContext(), "높은 파", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_n:
+                            connectedThread.write("n");
+                            Toast.makeText(getApplicationContext(), "높은 솔", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_o:
+                            connectedThread.write("o");
+                            Toast.makeText(getApplicationContext(), "높은 라", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.btn_code_p:
+                            connectedThread.write("p");
+                            Toast.makeText(getApplicationContext(), "높은 시", Toast.LENGTH_SHORT).show();
                             break;
                         //TODO 버튼별로 모두 추가하기(연결 테스트후) 토스트시간 0.5로 변경
                         //TODO 전송전 클릭시 미연결이라면 오류 출력
@@ -399,6 +504,16 @@ public class MainActivity extends AppCompatActivity {
         btnCodeC.setOnClickListener(codeListner);
         btnCodeD.setOnClickListener(codeListner);
         btnCodeE.setOnClickListener(codeListner);
-
+        btnCodeF.setOnClickListener(codeListner);
+        btnCodeG.setOnClickListener(codeListner);
+        btnCodeH.setOnClickListener(codeListner);
+        btnCodeI.setOnClickListener(codeListner);
+        btnCodeJ.setOnClickListener(codeListner);
+        btnCodeK.setOnClickListener(codeListner);
+        btnCodeL.setOnClickListener(codeListner);
+        btnCodeM.setOnClickListener(codeListner);
+        btnCodeN.setOnClickListener(codeListner);
+        btnCodeO.setOnClickListener(codeListner);
+        btnCodeP.setOnClickListener(codeListner);
     }
 }
