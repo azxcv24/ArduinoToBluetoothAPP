@@ -19,23 +19,39 @@
             <Button
                 android:id="@+id/btn_code_c"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="도" />
 
             <Button
+                android:id="@+id/btn_code_cc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="도#" />
+
+            <Button
                 android:id="@+id/btn_code_d"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="레" />
 
             <Button
+                android:id="@+id/btn_code_dd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="레#" />
+
+            <Button
                 android:id="@+id/btn_code_e"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="미" />
@@ -49,31 +65,55 @@
             <Button
                 android:id="@+id/btn_code_f"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="파" />
 
             <Button
+                android:id="@+id/btn_code_ff"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="파#" />
+
+            <Button
                 android:id="@+id/btn_code_g"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="솔" />
 
             <Button
+                android:id="@+id/btn_code_gg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="솔#" />
+
+            <Button
                 android:id="@+id/btn_code_h"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="라" />
 
             <Button
+                android:id="@+id/btn_code_hh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="라#" />
+
+            <Button
                 android:id="@+id/btn_code_i"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="시" />
@@ -86,6 +126,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="높은 옥타브" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,27 +139,43 @@
 
             <Button
                 android:id="@+id/btn_code_j"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 도" />
+                android:text="도" />
+
+            <Button
+                android:id="@+id/btn_code_jj"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="도#" />
 
             <Button
                 android:id="@+id/btn_code_k"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 레" />
+                android:text="레" />
+
+            <Button
+                android:id="@+id/btn_code_kk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="레#" />
 
             <Button
                 android:id="@+id/btn_code_l"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 미" />
+                android:text="미" />
         </LinearLayout>
 
         <LinearLayout
@@ -123,35 +185,59 @@
 
             <Button
                 android:id="@+id/btn_code_m"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 파" />
+                android:text="파" />
+
+            <Button
+                android:id="@+id/btn_code_mm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="파#" />
 
             <Button
                 android:id="@+id/btn_code_n"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 솔" />
+                android:text="솔" />
+
+            <Button
+                android:id="@+id/btn_code_nn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="솔#" />
 
             <Button
                 android:id="@+id/btn_code_o"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 라" />
+                android:text="라" />
+
+            <Button
+                android:id="@+id/btn_code_oo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:text="라#" />
 
             <Button
                 android:id="@+id/btn_code_p"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:text="높은 시" />
+                android:text="시" />
         </LinearLayout>
 
     </LinearLayout>
