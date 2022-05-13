@@ -14,7 +14,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -79,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
         String[] permission_list = {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.BLUETOOTH_CONNECT
         };
         ActivityCompat.requestPermissions(MainActivity.this, permission_list, 1);
+        bluetoothPermissionsChk();
 
         // Enable bluetooth
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -150,6 +152,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if the device is already discovering
         //TODO 확인필요 비정상 종료 발생!
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            bluetoothPermissionsChk();
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
         } else {
@@ -237,6 +250,28 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "Could not create Insecure RFComm Connection", e);
         }
         return device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
+    }
+
+    public void bluetoothPermissionsChk(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.BLUETOOTH,
+                            Manifest.permission.BLUETOOTH_SCAN,
+                            Manifest.permission.BLUETOOTH_ADVERTISE,
+                            Manifest.permission.BLUETOOTH_CONNECT
+                    },
+                    1);
+
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.BLUETOOTH
+
+                    },
+                    1);
+
+        }
     }
 
 
@@ -340,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
         btnPlayDel = (Button) contentMain.findViewById(R.id.btn_playDelet);
         codetextview = (TextView) contentMain.findViewById(R.id.code_textview);
 
-        //버튼 이벤트
+        //쉼표 버튼 이벤트
         btnCodeNull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -349,10 +384,11 @@ public class MainActivity extends AppCompatActivity {
                 sendStr = sendStr + " "; //전송용
             }
         });
+        //전송
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sendStr != null) {
+                if (!sendStr.isEmpty()) {
                     if (btContflag) {
                         connectedThread.write(sendStr); //sendStr에 들어있는 문자열을 전송!
                         Toast.makeText(getApplicationContext(), "음계 전송!", Toast.LENGTH_SHORT).show();
@@ -364,12 +400,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        
         btnPlayDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sendStr에 값을 하나씩 지우고 textview에 값 변경
-                //TODO null체크 작동확인할것!
-                if (sendStr != null) {
+                //sendStr에 값을 하나씩 지우고 textview 표시
+                if (!sendStr.isEmpty()) {
                     sendStr = sendStr.substring(0, sendStr.length() - 1);
                     showStr.remove(showStr.size() - 1);
                     codetextview.setText(showStr.toString());
@@ -411,6 +447,7 @@ public class MainActivity extends AppCompatActivity {
     //코드 표시용 변환 
     public void codeSetShowStr(char code) {
         sendStr = sendStr + code;
+        Log.v("sendStr","출력 : "+sendStr);
         showStr.add(codeToCodeNameStr(code));
         codetextview.setText(showStr.toString());
     }
@@ -500,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.btn_code_c:
                             codeSetShowStr('c');
                             break;
-                        case R.id.btn_code_cc: //TODO 샵 전송값넣기(일단 대문자)
+                        case R.id.btn_code_cc:
                             codeSetShowStr('C');
                             break;
                         case R.id.btn_code_d:
