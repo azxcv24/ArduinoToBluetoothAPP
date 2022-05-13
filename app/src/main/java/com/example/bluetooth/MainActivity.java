@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        
+        //한 음 지우기
         btnPlayDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -412,6 +412,20 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "계이름을 클릭하세요!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });        
+        //모두 지우기
+        btnPlayDel.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v){
+                if(!sendStr.isEmpty()){
+                    sendStr = "";
+                    showStr.clear();
+                    codetextview.setText(showStr.toString());
+                } else {
+                    Toast.makeText(getApplicationContext(), "계이름을 클릭하세요!", Toast.LENGTH_SHORT).show();
+                }
+                return true;
             }
         });
     }
