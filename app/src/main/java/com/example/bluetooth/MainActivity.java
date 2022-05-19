@@ -419,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v){
                 if(!sendStr.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "기록된 음 모두 제거!", Toast.LENGTH_SHORT).show();
                     sendStr = "";
                     showStr.clear();
                     codetextview.setText(showStr.toString());

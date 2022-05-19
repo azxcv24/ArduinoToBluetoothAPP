@@ -62,19 +62,27 @@
             android:layout_weight="1"
             android:onClick="onClickButtonMode"
             android:text="악보 모드" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/content_main"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ListView
-            android:id="@+id/listview"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/content_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-        </ListView>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"></ListView>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
