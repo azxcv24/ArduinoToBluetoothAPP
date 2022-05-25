@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                 codeSendstrWithShowstr(" 2");
             }
         });
-        //TODO 쉼표 롱클릭이벤트 박자 선택창 출력하기
+        //쉼표 박자 선택
         btnCodeNull.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
