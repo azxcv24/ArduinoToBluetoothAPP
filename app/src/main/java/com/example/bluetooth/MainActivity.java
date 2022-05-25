@@ -442,7 +442,17 @@ public class MainActivity extends AppCompatActivity {
         btnCodeNull.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return false;
+                dlgbeatView = (View) View.inflate(MainActivity.this, R.layout.beat_layout, null);
+
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("박자 선택");
+                dlg.setView(dlgbeatView);
+                onClickCodeBtnBeat(v.getId()); //클릭한 버튼 id값 넘겨줌
+
+                dlg.setPositiveButton("닫기", null);
+                dlg.show();
+
+                return true;
             }
         });
         //전송
@@ -627,6 +637,8 @@ public class MainActivity extends AppCompatActivity {
                 return "O" + beat;
             case R.id.btn_code_p:
                 return "p" + beat;
+            case R.id.btn_code_null:
+                return " " + beat;
         }
         return null;
     }
